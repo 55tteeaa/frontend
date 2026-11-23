@@ -9,6 +9,7 @@ services:
       - .env
     volumes:
       - ./src:/app/src:z
+      - ./public:/app/public:z
       - ./index.html:/app/index.html:z
     networks:
       - campus-net
