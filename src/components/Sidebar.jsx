@@ -1,6 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Calendar, Settings, Inbox, Layers, History, HelpCircle, ArrowRight } from 'lucide-react';
+import {
+  Home,
+  Calendar,
+  Settings,
+  Inbox,
+  Layers,
+  History,
+  Database,
+  HelpCircle,
+  ArrowRight,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Sidebar() {
@@ -16,6 +26,7 @@ export default function Sidebar() {
   const adminLinks = [
     { to: '/admin/cereri', label: 'Cereri în așteptare', icon: Inbox },
     { to: '/', label: 'Toate resursele', icon: Layers },
+    { to: '/admin/resurse', label: 'Gestionare resurse', icon: Database },
     { to: '/admin/istoric', label: 'Istoric', icon: History },
   ];
 

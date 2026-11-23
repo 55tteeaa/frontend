@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/Layout';
 import HomeCatalog from './pages/HomeCatalog';
 import ResourceBooking from './pages/ResourceBooking';
 import MyBookings from './pages/MyBookings';
 import AdminRequests from './pages/AdminRequests';
+import AdminResources from './pages/AdminResources';
 
 function AppRoutes() {
   const { user, loading } = useAuth();
@@ -46,6 +47,14 @@ function AppRoutes() {
         />
         <Route path="/admin/cereri" element={<AdminRequests mode="PENDING" />} />
         <Route path="/admin/istoric" element={<AdminRequests mode="HISTORY" />} />
+        <Route
+          path="/admin/imagini"
+          element={user?.role === 'ADMIN' ? <Navigate to="/admin/resurse" replace /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/admin/resurse"
+          element={user?.role === 'ADMIN' ? <AdminResources /> : <Navigate to="/" replace />}
+        />
       </Routes>
     </Layout>
   );

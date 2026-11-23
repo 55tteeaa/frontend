@@ -1,7 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, CheckCircle2, Clock, ArrowUpRight, Info } from 'lucide-react';
-import { apiFetch } from '../api/client';
+import {
+  Search,
+  CheckCircle2,
+  Clock,
+  ArrowUpRight,
+  Info,
+  Server,
+  Microscope,
+  ScanLine,
+  Monitor,
+  Printer,
+  Activity,
+} from 'lucide-react';
+import { API_URL, apiFetch } from '../api/client';
+
+const resourceImages = {
+  C01: '/resources/c01.jpg',
+  M02: '/resources/m02.jpg',
+  S03: '/resources/s03.jpg',
+};
+
+const resourceFallbackIcons = {
+  C01: Server,
+  M02: Microscope,
+  S03: ScanLine,
+  G04: Monitor,
+  P05: Printer,
+  A06: Activity,
+};
 
 export default function HomeCatalog() {
   const [resources, setResources] = useState([]);
@@ -130,11 +157,33 @@ export default function HomeCatalog() {
               className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition"
             >
               <div>
-                <div className="h-28 rounded-xl bg-slate-50 border border-slate-200/80 relative overflow-hidden mb-4">
-                  <svg className="w-full h-full stroke-slate-200" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <line x1="0" y1="0" x2="100" y2="100" strokeWidth="0.6" />
-                    <line x1="100" y1="0" x2="0" y2="100" strokeWidth="0.6" />
-                  </svg>
+                <div className="aspect-[16/9] rounded-xl bg-slate-100 border border-slate-200/80 relative overflow-hidden mb-4">
+                  <div
+                    className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-slate-100"
+                    aria-hidden="true"
+                  >
+                    {React.createElement(resourceFallbackIcons[item.code] || Activity, {
+                      className: 'w-10 h-10 text-[#3729A6]/70',
+                      strokeWidth: 1.5,
+                    })}
+                    <span className="mt-2 text-[10px] font-bold tracking-[0.2em] text-slate-400">
+                      {item.code}
+                    </span>
+                  </div>
+                  {(item.hasImage || resourceImages[item.code]) && (
+                    <img
+                      src={
+                        item.hasImage
+                          ? `${API_URL}/resources/${item.id}/image`
+                          : resourceImages[item.code]
+                      }
+                      alt={item.name}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      onError={(event) => event.currentTarget.remove()}
+                    />
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between gap-2">
